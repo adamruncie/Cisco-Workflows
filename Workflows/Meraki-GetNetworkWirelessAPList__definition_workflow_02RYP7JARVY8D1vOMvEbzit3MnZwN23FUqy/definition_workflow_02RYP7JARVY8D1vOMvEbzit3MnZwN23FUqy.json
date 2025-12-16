@@ -1,0 +1,217 @@
+{
+  "workflow": {
+    "unique_name": "definition_workflow_02RYP7JARVY8D1vOMvEbzit3MnZwN23FUqy",
+    "name": "Meraki - Get Network Wireless AP List",
+    "title": "Meraki - Get Network Wireless AP List",
+    "type": "generic.workflow",
+    "base_type": "workflow",
+    "variables": [
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "",
+          "scope": "input",
+          "name": "Network Name",
+          "type": "datatype.string",
+          "is_required": true,
+          "display_on_wizard": false,
+          "is_invisible": false,
+          "variable_string_format": "text"
+        },
+        "unique_name": "variable_workflow_02RYP9A9J46UL26Jbj6Uogb0iShlQwKlgOT",
+        "object_type": "variable_workflow"
+      },
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "",
+          "scope": "output",
+          "name": "AP List",
+          "type": "datatype.string",
+          "is_required": false,
+          "display_on_wizard": false,
+          "is_invisible": false,
+          "variable_string_format": "json"
+        },
+        "unique_name": "variable_workflow_02RYP8ODJT5BF5NXBTt01k1yXLhHF4iL8Ri",
+        "object_type": "variable_workflow"
+      }
+    ],
+    "properties": {
+      "atomic": {
+        "is_atomic": false
+      },
+      "delete_workflow_instance": false,
+      "display_name": "Meraki - Get Network Wireless AP List",
+      "runtime_user": {
+        "target_default": true
+      },
+      "target": {
+        "target_type": "meraki.endpoint",
+        "target_id": "definition_target_02RW6OLF3ZDJD3iCK2xd3rZzz19zeoWvVMu",
+        "execute_on_workflow_target": true
+      }
+    },
+    "object_type": "definition_workflow",
+    "actions": [
+      {
+        "unique_name": "definition_activity_02RYP8U5CYLXU6jNvNZo6HZIvKEKpEAnH7N",
+        "name": "Meraki - Get Network By Name or ID",
+        "title": "Meraki - Get Network By Name or ID",
+        "type": "workflow.sub_workflow",
+        "base_type": "subworkflow",
+        "properties": {
+          "continue_on_failure": false,
+          "description": "Utility workflow to retrieve network information using either Network Name or ID with flexible search criteria including configuration template binding filters. Automatically detects input format and applies appropriate search logic.\n\n**Key Features:**\n- Search by Network Name (exact match, case-sensitive)\n- Search by Network ID (format: N_XXXXXXXXXXXXXXXXX)\n- Filter by configuration template binding status\n- Comprehensive error handling\n- Rich network details output",
+          "display_name": "Meraki - Get Network By Name or ID",
+          "input": {
+            "variable_workflow_02LCRACABYWD40LVa27k00YndGuostARjdp": "$global.variable_02RW6SNY615UZ0h58ojWOs6ejLpCh3V902b.global.variable_02RW6SNY615UZ0h58ojWOs6ejLpCh3V902b$",
+            "variable_workflow_02LCRAQ5WICDM3PgxFwKyi19yaeu1bTpVUx": "$workflow.definition_workflow_02RYP7JARVY8D1vOMvEbzit3MnZwN23FUqy.input.variable_workflow_02RYP9A9J46UL26Jbj6Uogb0iShlQwKlgOT$",
+            "variable_workflow_02LEUF5N782ES5q1O7K4p1AoMBPrkkcxi1E": false,
+            "variable_workflow_02Q7QAYO3GMXK1F8eC0UiZ7xRXnHB5k71O7": ""
+          },
+          "runtime_user": {
+            "target_default": true
+          },
+          "skip_execution": false,
+          "target": {
+            "target_type": "meraki.endpoint",
+            "use_workflow_target": true
+          },
+          "workflow_id": "definition_workflow_02LCR4UKH38PM6zDR4Bx2b2J165gCF1mhvh",
+          "workflow_name": "Meraki - Get Network By Name or ID"
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_02RYPA8AVK7PO5oD0N3J7J6iB5L90Vr6PCC",
+        "name": "Meraki - Get Network Devices",
+        "title": "Meraki - Get Network Devices",
+        "type": "workflow.atomic_workflow",
+        "base_type": "subworkflow",
+        "properties": {
+          "continue_on_failure": false,
+          "description": "List the devices in a network",
+          "display_name": "Meraki - Get Network Devices",
+          "input": {
+            "variable_workflow_02OARCCWN2IXK7gPnLCayxUFGEWdki2Nvpg": "$activity.definition_activity_02RYP8U5CYLXU6jNvNZo6HZIvKEKpEAnH7N.output.variable_workflow_02LCRLPN6EZY51pb3GRpQG7QdKWS452YyuL$"
+          },
+          "runtime_user": {
+            "target_default": true
+          },
+          "skip_execution": false,
+          "target": {
+            "target_type": "meraki.endpoint",
+            "use_workflow_target": true
+          },
+          "workflow_id": "definition_workflow_02OARCCWN2FUG7Ae7KK8k16I7KM2hFRM6QM",
+          "workflow_name": "Meraki - Get Network Devices"
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_02RYPJCHZ75W11OCUmJIAgfNsXLlzR5ombL",
+        "name": "Execute Python Script",
+        "title": "Execute Python Script",
+        "type": "python3.script",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "continue_on_failure": false,
+          "description": "Execute Python Script",
+          "display_name": "Execute Python Script",
+          "script": "import json\n\ndata = json.loads('$activity.definition_activity_02RYPA8AVK7PO5oD0N3J7J6iB5L90Vr6PCC.output.variable_workflow_02OARCCWN2MSG7Xpg3ju8ms3nMaNAyM1Bbq$')\n\nwireless_ap_list = []\n\nfor item in data:\n    if (\"CW\" in item['model']) or (\"MR\" in item['model']):\n       \n        wireless_ap_list.append(item)\n\n\nwireless_ap_array = json.dumps(wireless_ap_list)  \n",
+          "script_queries": [
+            {
+              "script_query": "wireless_ap_array",
+              "script_query_name": "Wireless AP List",
+              "script_query_type": "string"
+            }
+          ],
+          "skip_execution": false
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_02RYTEAAD6J7Y09Ncs09R9t4Vt7btmMWsG4",
+        "name": "Set Variables",
+        "title": "Set AP List Output Variable",
+        "type": "core.set_multiple_variables",
+        "base_type": "activity",
+        "properties": {
+          "continue_on_failure": false,
+          "description": "Set Variables",
+          "display_name": "Set AP List Output Variable",
+          "skip_execution": false,
+          "variables_to_update": [
+            {
+              "variable_to_update": "$workflow.definition_workflow_02RYP7JARVY8D1vOMvEbzit3MnZwN23FUqy.output.variable_workflow_02RYP8ODJT5BF5NXBTt01k1yXLhHF4iL8Ri$",
+              "variable_value_new": "$activity.definition_activity_02RYPJCHZ75W11OCUmJIAgfNsXLlzR5ombL.output.script_queries.Wireless AP List$"
+            }
+          ]
+        },
+        "object_type": "definition_activity"
+      }
+    ],
+    "categories": [
+      "category_1BMfMXSnJMyt5Ihqi7rWJr5N8cf"
+    ]
+  },
+  "targets": {
+    "definition_target_02RW6OLF3ZDJD3iCK2xd3rZzz19zeoWvVMu": {
+      "unique_name": "definition_target_02RW6OLF3ZDJD3iCK2xd3rZzz19zeoWvVMu",
+      "name": "Adams-Meraki-Network",
+      "title": "Adams-Meraki-Network",
+      "type": "meraki.endpoint",
+      "base_type": "target",
+      "object_type": "definition_target",
+      "properties": {
+        "default_runtime_user_id": "definition_runtime_user_02RW6NEQIOINL6ZrvK59ym7jqvhb6gD4s15",
+        "display_name": "Adams-Meraki-Network",
+        "host": "api.meraki.com",
+        "ignore_proxy": false,
+        "is_https_proxy": false,
+        "is_integration_target": false,
+        "port": 443,
+        "protocol": "https"
+      }
+    }
+  },
+  "runtime_users": {
+    "definition_runtime_user_02RW6NEQIOINL6ZrvK59ym7jqvhb6gD4s15": {
+      "unique_name": "definition_runtime_user_02RW6NEQIOINL6ZrvK59ym7jqvhb6gD4s15",
+      "name": "Adam's Meraki Network API Creds",
+      "title": "Adam's Meraki Network API Creds",
+      "type": "runtime_user.meraki_credentials",
+      "base_type": "runtime_user",
+      "object_type": "definition_runtime_user",
+      "properties": {
+        "api_key": "*****",
+        "display_name": "Adam's Meraki Network API Creds"
+      }
+    }
+  },
+  "variables": {
+    "variable_02RW6SNY615UZ0h58ojWOs6ejLpCh3V902b": {
+      "unique_name": "variable_02RW6SNY615UZ0h58ojWOs6ejLpCh3V902b",
+      "properties": {
+        "value": "972151",
+        "scope": "global",
+        "name": "Adams-Meraki-Organization-ID",
+        "type": "datatype.string",
+        "is_required": false,
+        "display_on_wizard": false,
+        "is_invisible": false,
+        "variable_string_format": "text"
+      },
+      "object_type": "variable"
+    }
+  },
+  "atomic_workflows": [
+    "definition_workflow_02OARCCWN2FUG7Ae7KK8k16I7KM2hFRM6QM"
+  ],
+  "dependent_workflows": [
+    "definition_workflow_02LCR4UKH38PM6zDR4Bx2b2J165gCF1mhvh",
+    "definition_workflow_02OARCCWN2FUG7Ae7KK8k16I7KM2hFRM6QM"
+  ]
+}
