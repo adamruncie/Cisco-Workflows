@@ -1,0 +1,53 @@
+{
+  "output": {
+    "error": {
+      "code": "200",
+      "message": "success"
+    },
+    "response": {
+      "Output - Visible": false,
+      "Output - SSID Admin Accessible": false,
+      "Output - Walled Garden Enabled": false,
+      "Output - Encryption Mode": "",
+      "Output - Name": "",
+      "Output - RADIUS Enabled": false,
+      "Output - Local Auth": false,
+      "Output - Enabled": false,
+      "Output - RADIUS Accounting Enabled": false,
+      "Output - RADIUS Attribute For Group Policies": "",
+      "Output - Admin Splash URL": "",
+      "Output - RADIUS Load Balancing Policy": "",
+      "Output - RADIUS Servers": "",
+      "Output - Status Code": 200,
+      "Output - Band Selection": "",
+      "Output - Mandatory DHCP Enabled": false,
+      "Output - Splash Page": "",
+      "Output - RADIUS Accounting Servers": "",
+      "Output - SSID Number": "",
+      "Output - Splash Timeout": "",
+      "Output - Error Message": "",
+      "Output - Per SSID Bandwidth Limit Up": "",
+      "Output - Auth Mode": "",
+      "Output - Availability Tags": "",
+      "Output - RADIUS Failover Policy": "",
+      "Output - IP Assignment Mode": "",
+      "Output - Status Message": "200 OK",
+      "Output - Per Client Bandwidth Limit Down": "",
+      "Output - Available On All Aps": false,
+      "Output - WPA Encryption Mode": "",
+      "Output - Per SSID Bandwidth Limit Down": "",
+      "Output - Min Bitrate": "",
+      "Output - Result": "{\"adminSplashUrl\":\"\",\"authMode\":\"open\",\"availabilityTags\":[],\"availableOnAllAps\":true,\"bandSelection\":\"Dual band operation\",\"enabled\":true,\"ipAssignmentMode\":\"Bridge mode\",\"lanIsolationEnabled\":false,\"mandatoryDhcpEnabled\":true,\"minBitrate\":11,\"name\":\"16200Guest\",\"number\":1,\"perClientBandwidthLimitDown\":0,\"perClientBandwidthLimitUp\":0,\"perSsidBandwidthLimitDown\":0,\"perSsidBandwidthLimitUp\":0,\"speedBurst\":{\"enabled\":false},\"splashPage\":\"Click-through splash page\",\"splashTimeout\":\"1440 minutes\",\"ssidAdminAccessible\":false,\"useVlanTagging\":false,\"visible\":true,\"walledGardenEnabled\":true,\"walledGardenRanges\":[\"10.0.30.241/32\"]}",
+      "Output - Per Client Bandwidth Limit Up": "",
+      "Output - Walled Garden Ranges": "",
+      "elapsed_time": 1.5575591709999999,
+      "end_time": "2025-12-08T21:44:39.356Z",
+      "instance_id": "02RW7BRPXJ5M97Z2yVtMXEy5hS93frVhIny",
+      "start_time": "2025-12-08T21:44:37.798Z",
+      "started_by": "02RW7BROA2AY96kmOGWyEKgf2A7FG5C6S8S",
+      "succeeded": true,
+      "workflow_results": "{\"adminSplashUrl\":\"\",\"authMode\":\"open\",\"availabilityTags\":[],\"availableOnAllAps\":true,\"bandSelection\":\"Dual band operation\",\"enabled\":true,\"ipAssignmentMode\":\"Bridge mode\",\"lanIsolationEnabled\":false,\"mandatoryDhcpEnabled\":true,\"minBitrate\":11,\"name\":\"16200Guest\",\"number\":1,\"perClientBandwidthLimitDown\":0,\"perClientBandwidthLimitUp\":0,\"perSsidBandwidthLimitDown\":0,\"perSsidBandwidthLimitUp\":0,\"speedBurst\":{\"enabled\":false},\"splashPage\":\"Click-through splash page\",\"splashTimeout\":\"1440 minutes\",\"ssidAdminAccessible\":false,\"useVlanTagging\":false,\"visible\":true,\"walledGardenEnabled\":true,\"walledGardenRanges\":[\"10.0.30.241/32\"]}",
+      "workflow_results_code": "completed-successfully"
+    }
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "adminSplashUrl": "",
+  "authMode": "open",
+  "availabilityTags": [],
+  "availableOnAllAps": true,
+  "bandSelection": "Dual band operation",
+  "enabled": true,
+  "ipAssignmentMode": "Bridge mode",
+  "lanIsolationEnabled": false,
+  "mandatoryDhcpEnabled": true,
+  "minBitrate": 11,
+  "name": "16200Guest",
+  "number": 1,
+  "perClientBandwidthLimitDown": 0,
+  "perClientBandwidthLimitUp": 0,
+  "perSsidBandwidthLimitDown": 0,
+  "perSsidBandwidthLimitUp": 0,
+  "speedBurst": {
+    "enabled": false
+  },
+  "splashPage": "Click-through splash page",
+  "splashTimeout": "1440 minutes",
+  "ssidAdminAccessible": false,
+  "useVlanTagging": false,
+  "visible": true,
+  "walledGardenEnabled": true,
+  "walledGardenRanges": [
+    "10.0.30.241/32"
+  ]
+}
+
+{
+  "authMode": "8021x-radius",
+  "availabilityTags": [],
+  "availableOnAllAps": true,
+  "bandSelection": "5 GHz band only",
+  "dot11r": {
+    "adaptive": false,
+    "enabled": false
+  },
+  "dot11w": {
+    "enabled": true,
+    "required": true
+  },
+  "enabled": true,
+  "encryptionMode": "wpa-eap",
+  "ipAssignmentMode": "Bridge mode",
+  "lanIsolationEnabled": false,
+  "localAuthFallback": {
+    "cacheTimeout": "86400",
+    "enabled": false,
+    "serverCaCertificate": {
+      "contents": null
+    }
+  },
+  "mandatoryDhcpEnabled": false,
+  "minBitrate": 12,
+  "name": "16200Users",
+  "number": 2,
+  "perClientBandwidthLimitDown": 0,
+  "perClientBandwidthLimitUp": 0,
+  "perSsidBandwidthLimitDown": 0,
+  "perSsidBandwidthLimitUp": 0,
+  "radiusAccountingEnabled": true,
+  "radiusAccountingInterimInterval": 600,
+  "radiusAccountingServers": [
+    {
+      "caCertificate": null,
+      "host": "10.0.30.241",
+      "id": "585467951558564903",
+      "openRoamingCertificateId": null,
+      "port": 1813,
+      "radsecEnabled": false
+    }
+  ],
+  "radiusAccountingStartDelay": 0,
+  "radiusAttributeForGroupPolicies": "Airespace-ACL-Name",
+  "radiusAuthenticationNasId": "$NODE_LAN_IP$:$VAP_NUM$",
+  "radiusCalledStationId": "$NODE_LAN_IP$:$VAP_NAME$",
+  "radiusCoaEnabled": true,
+  "radiusFallbackEnabled": false,
+  "radiusOverride": false,
+  "radiusProxyEnabled": false,
+  "radiusServerAttemptsLimit": 3,
+  "radiusServerTimeout": 1,
+  "radiusServers": [
+    {
+      "caCertificate": null,
+      "host": "10.0.30.241",
+      "id": "585467951558564902",
+      "openRoamingCertificateId": null,
+      "port": 1812,
+      "radsecEnabled": false
+    }
+  ],
+  "radiusTestingEnabled": false,
+  "speedBurst": {
+    "enabled": false
+  },
+  "splashPage": "None",
+  "ssidAdminAccessible": false,
+  "useVlanTagging": false,
+  "visible": true,
+  "wpaEncryptionMode": "WPA3 192-bit Security"
+}
+
+
+"[{\"address\": \"16200 Quarry Hill Dr, Parker, CO 80134\", \"details\": [], \"firmware\": \"wireless-32-1-5\", \"floorPlanId\": null, \"lanIp\": \"10.0.0.210\", \"lat\": 39.5298, \"lng\": -104.80381, \"mac\": \"cc:6e:2a:5f:49:f0\", \"model\": \"CW9176I\", \"name\": \"CW9176-1\", \"networkId\": \"L_585467951558186073\", \"serial\": \"Q5BK-7WHM-4MUB\", \"tags\": [], \"url\": \"https://n40.dashboard.meraki.com/Adams-Office-wir/n/5z4cNaO/manage/nodes/new_list/224773529356784\"}]"
