@@ -1,0 +1,596 @@
+{
+  "workflow": {
+    "unique_name": "definition_workflow_02REZ7IHW66IN70EInsDs4OpgkqyTBhTPSh",
+    "name": "ISE - Add Dashboard Network Switches \u0026 APs as RADIUS NADs",
+    "title": "ISE - Add Dashboard Network Switches \u0026 APs as RADIUS NADs",
+    "type": "generic.workflow",
+    "base_type": "workflow",
+    "variables": [
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "",
+          "scope": "input",
+          "name": "SNMP RO Community String",
+          "type": "datatype.string",
+          "description": "This is the user-defined SNMP v2c read-only community string that will be configured on ISE for all switches and APs in the Dashboard Network against which this Workflow is executed.",
+          "is_required": true,
+          "display_on_wizard": false,
+          "is_invisible": false,
+          "variable_string_format": "text"
+        },
+        "unique_name": "variable_workflow_02TEPRRCW3NC10U4XyWUChGi7g8KH8jUzo3",
+        "object_type": "variable_workflow"
+      },
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "",
+          "scope": "input",
+          "name": "RADIUS Secret",
+          "type": "datatype.string",
+          "description": "This is the user-desired RADIUS secret that will be configured on ISE for all switches and APs in the Dashboard Network against which this Workflow is executed.  ",
+          "is_required": true,
+          "display_on_wizard": false,
+          "is_invisible": false,
+          "variable_string_format": "text"
+        },
+        "unique_name": "variable_workflow_02TEU235I48EN7T74Yi0Y9bTqJ5G5Psbit2",
+        "object_type": "variable_workflow"
+      },
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "",
+          "scope": "input",
+          "name": "Dashboard Network Name",
+          "type": "datatype.string",
+          "description": "This is the name of the Dashboard Network against which this Workflow is executed.",
+          "is_required": true,
+          "display_on_wizard": false,
+          "is_invisible": false,
+          "variable_string_format": "text"
+        },
+        "unique_name": "variable_workflow_02TEP3PBK88SZ6zMfK5IOSkDuTuA6BHVLPp",
+        "object_type": "variable_workflow"
+      }
+    ],
+    "properties": {
+      "atomic": {
+        "is_atomic": false
+      },
+      "delete_workflow_instance": false,
+      "description": "This Workflow retrieves a list of all switches and access points (APs) in a given Cloud Dashboard network and adds them as a RADIUS Network Access Device (NAD) to ISE by IP address and user-defined RADIUS secret.\n\nREQUIREMENTS:\n- Remote Target available that has access to the necessary ISE Policy Administration Node (PAN)\n- ERS admin assigned to ERS_Admin group in ISE, as the APIs used in this Workflow are ERS based",
+      "display_name": "ISE - Add Dashboard Network Switches \u0026 APs as RADIUS NADs",
+      "runtime_user": {
+        "target_default": true
+      },
+      "target": {
+        "target_type": "meraki.endpoint",
+        "target_id": "definition_target_02RW6OLF3ZDJD3iCK2xd3rZzz19zeoWvVMu",
+        "execute_on_workflow_target": true
+      }
+    },
+    "object_type": "definition_workflow",
+    "actions": [
+      {
+        "unique_name": "definition_activity_02TEP8VWC62N11YR3f0fsN0oM9h7YG77aFH",
+        "name": "Meraki - Get Network By Name or ID",
+        "title": "Meraki - Get Network By Name or ID",
+        "type": "workflow.sub_workflow",
+        "base_type": "subworkflow",
+        "properties": {
+          "continue_on_failure": false,
+          "description": "Utility workflow to retrieve network information using either Network Name or ID with flexible search criteria including configuration template binding filters. Automatically detects input format and applies appropriate search logic.\n\n**Key Features:**\n- Search by Network Name (exact match, case-sensitive)\n- Search by Network ID (format: N_XXXXXXXXXXXXXXXXX)\n- Filter by configuration template binding status\n- Rich network details output",
+          "display_name": "Meraki - Get Network By Name or ID",
+          "input": {
+            "variable_workflow_02LCRACABYWD40LVa27k00YndGuostARjdp": "$global.variable_02RW6SNY615UZ0h58ojWOs6ejLpCh3V902b.global.variable_02RW6SNY615UZ0h58ojWOs6ejLpCh3V902b$",
+            "variable_workflow_02LCRAQ5WICDM3PgxFwKyi19yaeu1bTpVUx": "$workflow.definition_workflow_02REZ7IHW66IN70EInsDs4OpgkqyTBhTPSh.input.variable_workflow_02TEP3PBK88SZ6zMfK5IOSkDuTuA6BHVLPp$",
+            "variable_workflow_02LEUF5N782ES5q1O7K4p1AoMBPrkkcxi1E": false,
+            "variable_workflow_02Q7QAYO3GMXK1F8eC0UiZ7xRXnHB5k71O7": ""
+          },
+          "runtime_user": {
+            "target_default": true
+          },
+          "skip_execution": false,
+          "target": {
+            "target_type": "meraki.endpoint",
+            "use_workflow_target": true
+          },
+          "workflow_id": "definition_workflow_02LCR4UKH38PM6zDR4Bx2b2J165gCF1mhvh",
+          "workflow_name": "Meraki - Get Network By Name or ID"
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_02TFA1IN70EPO091KrpQZ6S902YWnbTCpxM",
+        "name": "Replace String",
+        "title": "Format Network Name for URL",
+        "type": "core.replacestring",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "continue_on_failure": false,
+          "description": "This task replaces any spaces in the network name with %20 for use in the URL query to ISE that follows",
+          "display_name": "Format Network Name for URL",
+          "input_string": "$workflow.definition_workflow_02REZ7IHW66IN70EInsDs4OpgkqyTBhTPSh.input.variable_workflow_02TEP3PBK88SZ6zMfK5IOSkDuTuA6BHVLPp$",
+          "replace_list": [
+            {
+              "replaced_string": "\" \"",
+              "replacement_string": "\"%20\""
+            }
+          ],
+          "skip_execution": false
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_02TF9RMTS6MVP6NZzFwCnEf0deDnFmpEpkW",
+        "name": "HTTP Request",
+        "title": "ISE - Get Network Device Group by Name",
+        "type": "web-service.http_request",
+        "base_type": "activity",
+        "properties": {
+          "accept": "application/json",
+          "action_timeout": 180,
+          "allow_auto_redirect": true,
+          "allow_headers_redirect": false,
+          "content_type": "application/json",
+          "continue_on_error_status_code": false,
+          "continue_on_failure": true,
+          "description": "This request queries ISE to see if a Network Device Group by the name matching the Network Name given by the user already exists.",
+          "display_name": "ISE - Get Network Device Group by Name",
+          "method": "GET",
+          "relative_url": "/ers/config/networkdevicegroup/name/Location:All%20Locations:$activity.definition_activity_02TFA1IN70EPO091KrpQZ6S902YWnbTCpxM.output.result_string$",
+          "runtime_user": {
+            "override_target_runtime_user": true,
+            "runtime_user_id": "definition_runtime_user_02TETXI7QYCN90ogbLbFsG2iB0IpgzXLDZD"
+          },
+          "skip_execution": false,
+          "target": {
+            "override_workflow_target": true,
+            "target_id": "definition_target_02TETXRCMDOT15YYbRrY84UIhZGcoAwnNrj"
+          }
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_02TFA3W2TS3237Amxtu5yhS3Ejhez0lYj91",
+        "name": "Condition Block",
+        "title": "Check if Network Device Group matching Network Name Exists",
+        "type": "logic.if_else",
+        "base_type": "activity",
+        "properties": {
+          "conditions": [],
+          "continue_on_failure": false,
+          "description": "This block checks whether or not a Network Device Group (NDG) in ISE already exists that matches the Dashboard Network Name against which it is run; and, if not, it creates this NDG under Location \u003e All Locations. ",
+          "display_name": "Check if Network Device Group matching Network Name Exists",
+          "skip_execution": false
+        },
+        "object_type": "definition_activity",
+        "blocks": [
+          {
+            "unique_name": "definition_activity_02TFA3W535SQL6CiZ9sgJw59QmIobI3dEsX",
+            "name": "Condition Branch",
+            "title": "If Network Device Group Name DOES NOT Exist",
+            "type": "logic.condition_block",
+            "base_type": "activity",
+            "properties": {
+              "condition": {
+                "left_operand": "$activity.definition_activity_02TF9RMTS6MVP6NZzFwCnEf0deDnFmpEpkW.output.error.code$",
+                "operator": "eq",
+                "right_operand": "404"
+              },
+              "continue_on_failure": false,
+              "display_name": "If Network Device Group Name DOES NOT Exist",
+              "skip_execution": false
+            },
+            "object_type": "definition_activity",
+            "actions": [
+              {
+                "unique_name": "definition_activity_02TFAAPWWLCD33pmYir4T46Cgm0EXEoWscv",
+                "name": "HTTP Request",
+                "title": "ISE - Create Network Device Group by Name",
+                "type": "web-service.http_request",
+                "base_type": "activity",
+                "properties": {
+                  "accept": "application/json",
+                  "action_timeout": 180,
+                  "allow_auto_redirect": true,
+                  "allow_headers_redirect": false,
+                  "body": "{\n  \"NetworkDeviceGroup\": {\n    \"othername\": \"Location\",\n    \"name\": \"Location#All Locations#$workflow.definition_workflow_02REZ7IHW66IN70EInsDs4OpgkqyTBhTPSh.input.variable_workflow_02TEP3PBK88SZ6zMfK5IOSkDuTuA6BHVLPp$\",\n    \"description\": \"Cloud Dashboard - $workflow.definition_workflow_02REZ7IHW66IN70EInsDs4OpgkqyTBhTPSh.input.variable_workflow_02TEP3PBK88SZ6zMfK5IOSkDuTuA6BHVLPp$\"\n  }\n}",
+                  "content_type": "application/json",
+                  "continue_on_error_status_code": false,
+                  "continue_on_failure": false,
+                  "description": "HTTP Request",
+                  "display_name": "ISE - Create Network Device Group by Name",
+                  "method": "POST",
+                  "relative_url": "/ers/config/networkdevicegroup",
+                  "runtime_user": {
+                    "override_target_runtime_user": true,
+                    "runtime_user_id": "definition_runtime_user_02TETXI7QYCN90ogbLbFsG2iB0IpgzXLDZD"
+                  },
+                  "skip_execution": false,
+                  "target": {
+                    "override_workflow_target": true,
+                    "target_id": "definition_target_02TETXRCMDOT15YYbRrY84UIhZGcoAwnNrj"
+                  }
+                },
+                "object_type": "definition_activity"
+              }
+            ]
+          },
+          {
+            "unique_name": "definition_activity_02TFA3W7DU8AU007NnPZoY7znuBSclKlvjd",
+            "name": "Condition Branch",
+            "title": "If Network Device Group Name DOES Exist",
+            "type": "logic.condition_block",
+            "base_type": "activity",
+            "properties": {
+              "condition": {
+                "left_operand": "$activity.definition_activity_02TF9RMTS6MVP6NZzFwCnEf0deDnFmpEpkW.output.error.code$",
+                "operator": "eq",
+                "right_operand": "200"
+              },
+              "continue_on_failure": false,
+              "display_name": "If Network Device Group Name DOES Exist",
+              "skip_execution": false
+            },
+            "object_type": "definition_activity"
+          }
+        ]
+      },
+      {
+        "unique_name": "definition_activity_02TEP58ESJ10F1nfDsmE7muPKcvZYRze4GE",
+        "name": "Meraki - Get Network Devices",
+        "title": "Meraki - Get Network Devices",
+        "type": "workflow.atomic_workflow",
+        "base_type": "subworkflow",
+        "properties": {
+          "continue_on_failure": false,
+          "description": "List the devices in a network",
+          "display_name": "Meraki - Get Network Devices",
+          "input": {
+            "variable_workflow_02OARCCWN2IXK7gPnLCayxUFGEWdki2Nvpg": "$activity.definition_activity_02TEP8VWC62N11YR3f0fsN0oM9h7YG77aFH.output.variable_workflow_02LCRLPN6EZY51pb3GRpQG7QdKWS452YyuL$"
+          },
+          "runtime_user": {
+            "target_default": true
+          },
+          "skip_execution": false,
+          "target": {
+            "override_workflow_target": true,
+            "target_id": "definition_target_02RW6OLF3ZDJD3iCK2xd3rZzz19zeoWvVMu",
+            "target_type": "meraki.endpoint"
+          },
+          "workflow_id": "definition_workflow_02OARCCWN2FUG7Ae7KK8k16I7KM2hFRM6QM",
+          "workflow_name": "Meraki - Get Network Devices"
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_02TEPC8P54HKO39oj0auoWNqVT64XFHC8PI",
+        "name": "Execute Python Script",
+        "title": "Filter On Switches \u0026 APs",
+        "type": "python3.script",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "continue_on_failure": false,
+          "description": "This block filters out all other devices that are not Switches or APs",
+          "display_name": "Filter On Switches \u0026 APs",
+          "script": "import json\n\ndata = json.loads('[{\"address\":\"16200 Quarry Hill Drive, Parker, CO 80134\",\"details\":[],\"firmware\":\"camera-7-1-2\",\"floorPlanId\":null,\"lanIp\":\"10.0.0.11\",\"lat\":39.5298,\"lng\":-104.80381,\"mac\":\"ac:17:c8:0e:27:e4\",\"model\":\"MV12WE\",\"name\":\"Garage\",\"networkId\":\"L_585467951558186073\",\"serial\":\"Q2FV-7GBA-5V6J\",\"tags\":[\"recently-added\"],\"url\":\"https://n40.dashboard.meraki.com/Adams-Office-cam/n/9QeyNcO/manage/nodes/new_list/189218140596196\",\"wirelessMac\":\"ac:17:c8:0e:27:e5\"},{\"address\":\"16200 Quarry Hill Dr, Parker, CO 80134\",\"details\":[],\"firmware\":\"wired-19-1-11\",\"floorPlanId\":null,\"lat\":39.5298,\"lng\":-104.80381,\"mac\":\"cc:9c:3e:5b:de:24\",\"model\":\"MX75\",\"name\":\"MX75\",\"networkId\":\"L_585467951558186073\",\"serial\":\"Q3FA-SPGH-VZ6L\",\"tags\":[],\"url\":\"https://n40.dashboard.meraki.com/Adams-Office-app/n/dx7RDaO/manage/nodes/new_list/224971433172516\",\"wan1Ip\":\"73.34.179.60\",\"wan2Ip\":null},{\"address\":\"16200 Quarry Hill Dr, Parker, CO 80134\",\"details\":[],\"firmware\":\"wireless-32-1-6\",\"floorPlanId\":null,\"lanIp\":\"10.0.0.211\",\"lat\":39.5298,\"lng\":-104.80381,\"mac\":\"cc:6e:2a:61:20:30\",\"model\":\"CW9176I\",\"name\":\"CW9176-2\",\"networkId\":\"L_585467951558186073\",\"serial\":\"Q5BK-PG9N-9VLH\",\"tags\":[],\"url\":\"https://n40.dashboard.meraki.com/Adams-Office-wir/n/5z4cNaO/manage/nodes/new_list/224773529477168\"},{\"address\":\"16200 Quarry Hill Dr, Parker, CO 80134\",\"details\":[],\"firmware\":\"wireless-32-1-6\",\"floorPlanId\":null,\"lanIp\":\"10.0.0.210\",\"lat\":39.5298,\"lng\":-104.80381,\"mac\":\"cc:6e:2a:5f:49:f0\",\"model\":\"CW9176I\",\"name\":\"CW9176-1\",\"networkId\":\"L_585467951558186073\",\"serial\":\"Q5BK-7WHM-4MUB\",\"tags\":[],\"url\":\"https://n40.dashboard.meraki.com/Adams-Office-wir/n/5z4cNaO/manage/nodes/new_list/224773529356784\"},{\"address\":\"16200 Quarry Hill Dr, Parker, CO 80134\",\"details\":[],\"firmware\":\"ios-xe-17-18-2\",\"floorPlanId\":null,\"lanIp\":\"10.255.100.3\",\"lat\":39.5298,\"lng\":-104.80381,\"mac\":\"d0:85:43:12:5b:80\",\"model\":\"C9500-24Y4C\",\"name\":\"RUNCOR-C9500-2\",\"networkId\":\"L_585467951558186073\",\"serial\":\"Q5VZ-KJND-XDQM\",\"switchProfileId\":null,\"tags\":[],\"url\":\"https://n40.dashboard.meraki.com/Adams-Office-swi/n/Evj9bdO/manage/nodes/new_list/229270774504320\"},{\"address\":\"16200 Quarry Hill Dr, Parker, CO 80134\",\"details\":[],\"firmware\":\"ios-xe-17-18-2\",\"floorPlanId\":null,\"lanIp\":\"10.255.100.1\",\"lat\":39.5298,\"lng\":-104.80381,\"mac\":\"a0:c7:d2:99:28:80\",\"model\":\"C9500-24Y4C\",\"name\":\"RUNCOR-C9500-1\",\"networkId\":\"L_585467951558186073\",\"serial\":\"Q5VZ-A4Y9-ADD2\",\"switchProfileId\":null,\"tags\":[],\"url\":\"https://n40.dashboard.meraki.com/Adams-Office-swi/n/Evj9bdO/manage/nodes/new_list/176780092188800\"},{\"address\":\"16200 Quarry Hill Dr, Parker, CO 80134\",\"details\":[],\"firmware\":\"cs-iosxe-17-18-2\",\"floorPlanId\":null,\"lanIp\":\"10.0.1.20\",\"lat\":39.5298,\"lng\":-104.80381,\"mac\":\"f0:03:bc:1c:3a:00\",\"model\":\"C9300L-24UXG-4X\",\"name\":\"RUNCOR-C9300-1\",\"networkId\":\"L_585467951558186073\",\"serial\":\"Q5TP-VHGJ-ZX99\",\"switchProfileId\":null,\"tags\":[],\"url\":\"https://n40.dashboard.meraki.com/Adams-Office-swi/n/Evj9bdO/manage/nodes/new_list/263898831534592\"}]')\n\nswitchModelFamily = [\"C9200\",\"C9300\",\"C9350\",\"C9400\",\"C9500\",\"C9600\",\"C9610\",\"MS\"]\napModelFamily = [\"MR\", \"CW\"]\nnadDeviceList = []\n\nfor item in data:\n    if any (s in item['model'] for s in apModelFamily):\n        item['type'] = \"ap\"\n        nadDeviceList.append(item)\n    elif any (s in item['model'] for s in switchModelFamily):\n        item['type'] = \"switch\"\n        nadDeviceList.append(item)\n    else:\n        continue\n\nnadDeviceArray = json.dumps(nadDeviceList)",
+          "script_queries": [
+            {
+              "script_query": "nadDeviceArray",
+              "script_query_name": "NAD Device List",
+              "script_query_type": "string"
+            }
+          ],
+          "skip_execution": false
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_02TEPKK1M383G31j0VwUgnmmCIOaNK4YFwM",
+        "name": "Read Table from JSON",
+        "title": "NAD List - Format Output into JSON for Loop",
+        "type": "corejava.read_table_from_json",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "continue_on_failure": false,
+          "description": "Reading table data from JSON",
+          "display_name": "NAD List - Format Output into JSON for Loop",
+          "input_json": "$activity.definition_activity_02TEPC8P54HKO39oj0auoWNqVT64XFHC8PI.output.script_queries.NAD Device List$",
+          "jsonpath_query": "$.",
+          "persist_output": false,
+          "populate_columns": false,
+          "skip_execution": false,
+          "table_columns": [
+            {
+              "column_name": "name",
+              "column_type": "string"
+            },
+            {
+              "column_name": "model",
+              "column_type": "string"
+            },
+            {
+              "column_name": "lanIp",
+              "column_type": "string"
+            },
+            {
+              "column_name": "type",
+              "column_type": "string"
+            }
+          ]
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_02TEPH1DZND2I6OuaJO0uZ0c1IPk2fSymk1",
+        "name": "For Each",
+        "title": "Loop through JSON Table of Devices",
+        "type": "logic.for_each",
+        "base_type": "activity",
+        "properties": {
+          "continue_on_failure": false,
+          "description": "ForEach block",
+          "display_name": "Loop through JSON Table of Devices",
+          "skip_execution": false,
+          "source_array": "$activity.definition_activity_02TEPKK1M383G31j0VwUgnmmCIOaNK4YFwM.output.read_table_from_json$"
+        },
+        "object_type": "definition_activity",
+        "actions": [
+          {
+            "unique_name": "definition_activity_02TERMSUOHZDG0McYXb5NiWj5r6xpaMUMJ1",
+            "name": "Condition Block",
+            "title": "Checking if Device is Switch or AP",
+            "type": "logic.if_else",
+            "base_type": "activity",
+            "properties": {
+              "conditions": [],
+              "continue_on_failure": false,
+              "description": "This block looks at the \"type\" field of a given device to decide whether it should add the device under Device Type \u003e Switches or Device Type \u003e Wireless Access Points in ISE.",
+              "display_name": "Checking if Device is Switch or AP",
+              "skip_execution": false
+            },
+            "object_type": "definition_activity",
+            "blocks": [
+              {
+                "unique_name": "definition_activity_02TERMSWWYHZ56fKyFFaPgSvox0fXUX49Ar",
+                "name": "Condition Branch",
+                "title": "If Device is AP",
+                "type": "logic.condition_block",
+                "base_type": "activity",
+                "properties": {
+                  "condition": {
+                    "left_operand": "$activity.definition_activity_02TEPH1DZND2I6OuaJO0uZ0c1IPk2fSymk1.input.source_array[@].type$",
+                    "operator": "eq",
+                    "right_operand": "ap"
+                  },
+                  "continue_on_failure": false,
+                  "display_name": "If Device is AP",
+                  "skip_execution": false
+                },
+                "object_type": "definition_activity",
+                "actions": [
+                  {
+                    "unique_name": "definition_activity_02TETWPD3JNE43i6UZKZBjPkyxLUvaiUMZS",
+                    "name": "HTTP Request",
+                    "title": "ISE - Add AP",
+                    "type": "web-service.http_request",
+                    "base_type": "activity",
+                    "properties": {
+                      "accept": "application/json",
+                      "action_timeout": 180,
+                      "allow_auto_redirect": true,
+                      "allow_headers_redirect": false,
+                      "body": "{\n    \"NetworkDevice\": {\n        \"name\": \"$activity.definition_activity_02TEPH1DZND2I6OuaJO0uZ0c1IPk2fSymk1.input.source_array[@].name$\",\n        \"description\": \"Lab AP\",\n        \"authenticationSettings\": {\n            \"networkProtocol\": \"RADIUS\",\n            \"radiusSharedSecret\": \"$workflow.definition_workflow_02REZ7IHW66IN70EInsDs4OpgkqyTBhTPSh.input.variable_workflow_02TEU235I48EN7T74Yi0Y9bTqJ5G5Psbit2$\",\n            \"enableKeyWrap\": false,\n            \"dtlsRequired\": false,\n            \"keyEncryptionKey\": \"\",\n            \"messageAuthenticatorCodeKey\": \"\",\n            \"keyInputFormat\": \"ASCII\",\n            \"enableMultiSecret\": \"false\"\n        },\n        \"snmpsettings\": {\n            \"version\": \"TWO_C\",\n            \"roCommunity\": \"$workflow.definition_workflow_02REZ7IHW66IN70EInsDs4OpgkqyTBhTPSh.input.variable_workflow_02TEPRRCW3NC10U4XyWUChGi7g8KH8jUzo3$\",\n            \"pollingInterval\": 28800,\n            \"linkTrapQuery\": true,\n            \"macTrapQuery\": true,\n            \"originatingPolicyServicesNode\": \"Auto\"\n        },\n        \"profileName\": \"Cisco\",\n        \"coaPort\": 1700,\n        \"NetworkDeviceIPList\": [\n            {\n                \"ipaddress\": \"$activity.definition_activity_02TEPH1DZND2I6OuaJO0uZ0c1IPk2fSymk1.input.source_array[@].lanIp$\",\n                \"mask\": 32\n            }\n        ],\n        \"NetworkDeviceGroupList\": [\n            \"Location#All Locations#$workflow.definition_workflow_02REZ7IHW66IN70EInsDs4OpgkqyTBhTPSh.input.variable_workflow_02TEP3PBK88SZ6zMfK5IOSkDuTuA6BHVLPp$\",\n            \"IPSEC#Is IPSEC Device#No\",\n            \"Device Type#All Device Types#Wireless Access Points\"\n        ]\n    }\n}",
+                      "content_type": "application/json",
+                      "continue_on_error_status_code": false,
+                      "continue_on_failure": false,
+                      "description": "Add AP to ISE",
+                      "display_name": "ISE - Add AP",
+                      "method": "POST",
+                      "relative_url": "ers/config/networkdevice/",
+                      "runtime_user": {
+                        "target_default": true
+                      },
+                      "skip_execution": false,
+                      "target": {
+                        "override_workflow_target": true,
+                        "target_id": "definition_target_02TETXRCMDOT15YYbRrY84UIhZGcoAwnNrj"
+                      }
+                    },
+                    "object_type": "definition_activity"
+                  }
+                ]
+              },
+              {
+                "unique_name": "definition_activity_02TERMSZ0IPKN23xFCQ2GGGFcd7pXIykGKq",
+                "name": "Condition Branch",
+                "title": "If Device is Switch",
+                "type": "logic.condition_block",
+                "base_type": "activity",
+                "properties": {
+                  "condition": {
+                    "left_operand": "$activity.definition_activity_02TEPH1DZND2I6OuaJO0uZ0c1IPk2fSymk1.input.source_array[@].type$",
+                    "operator": "eq",
+                    "right_operand": "switch"
+                  },
+                  "continue_on_failure": false,
+                  "display_name": "If Device is Switch",
+                  "skip_execution": false
+                },
+                "object_type": "definition_activity",
+                "actions": [
+                  {
+                    "unique_name": "definition_activity_02TF9KMT58HK46wGB7pi8lQIBWYUFxvZOOH",
+                    "name": "HTTP Request",
+                    "title": "ISE - Add Switch",
+                    "type": "web-service.http_request",
+                    "base_type": "activity",
+                    "properties": {
+                      "accept": "application/json",
+                      "action_timeout": 180,
+                      "allow_auto_redirect": true,
+                      "allow_headers_redirect": false,
+                      "body": "{\n    \"NetworkDevice\": {\n        \"name\": \"$activity.definition_activity_02TEPH1DZND2I6OuaJO0uZ0c1IPk2fSymk1.input.source_array[@].name$\",\n        \"description\": \"Lab Switch\",\n        \"authenticationSettings\": {\n            \"networkProtocol\": \"RADIUS\",\n            \"radiusSharedSecret\": \"$workflow.definition_workflow_02REZ7IHW66IN70EInsDs4OpgkqyTBhTPSh.input.variable_workflow_02TEU235I48EN7T74Yi0Y9bTqJ5G5Psbit2$\",\n            \"enableKeyWrap\": false,\n            \"dtlsRequired\": false,\n            \"keyEncryptionKey\": \"\",\n            \"messageAuthenticatorCodeKey\": \"\",\n            \"keyInputFormat\": \"ASCII\",\n            \"enableMultiSecret\": \"false\"\n        },\n        \"snmpsettings\": {\n            \"version\": \"TWO_C\",\n            \"roCommunity\": \"$workflow.definition_workflow_02REZ7IHW66IN70EInsDs4OpgkqyTBhTPSh.input.variable_workflow_02TEPRRCW3NC10U4XyWUChGi7g8KH8jUzo3$\",\n            \"pollingInterval\": 28800,\n            \"linkTrapQuery\": true,\n            \"macTrapQuery\": true,\n            \"originatingPolicyServicesNode\": \"Auto\"\n        },\n        \"profileName\": \"Cisco\",\n        \"coaPort\": 1700,\n        \"NetworkDeviceIPList\": [\n            {\n                \"ipaddress\": \"$activity.definition_activity_02TEPH1DZND2I6OuaJO0uZ0c1IPk2fSymk1.input.source_array[@].lanIp$\",\n                \"mask\": 32\n            }\n        ],\n        \"NetworkDeviceGroupList\": [\n            \"Location#All Locations#$workflow.definition_workflow_02REZ7IHW66IN70EInsDs4OpgkqyTBhTPSh.input.variable_workflow_02TEP3PBK88SZ6zMfK5IOSkDuTuA6BHVLPp$\",\n            \"IPSEC#Is IPSEC Device#No\",\n            \"Device Type#All Device Types#Switches\"\n        ]\n    }\n}",
+                      "content_type": "application/json",
+                      "continue_on_error_status_code": false,
+                      "continue_on_failure": false,
+                      "description": "Add Switch to ISE",
+                      "display_name": "ISE - Add Switch",
+                      "method": "POST",
+                      "relative_url": "ers/config/networkdevice/",
+                      "runtime_user": {
+                        "target_default": true
+                      },
+                      "skip_execution": false,
+                      "target": {
+                        "override_workflow_target": true,
+                        "target_id": "definition_target_02TETXRCMDOT15YYbRrY84UIhZGcoAwnNrj"
+                      }
+                    },
+                    "object_type": "definition_activity"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "categories": [
+      "category_02TFAUBW3H8UK4SpyiRRHAupiwWUhRkApLx",
+      "category_02LA3RNX6YL4430HdJs9thJNlUZGnFD8hfg"
+    ]
+  },
+  "categories": {
+    "category_02TFAUBW3H8UK4SpyiRRHAupiwWUhRkApLx": {
+      "unique_name": "category_02TFAUBW3H8UK4SpyiRRHAupiwWUhRkApLx",
+      "name": "Cisco ISE - RADIUS Network Access",
+      "title": "Cisco ISE - RADIUS Network Access",
+      "type": "basic.category",
+      "base_type": "category",
+      "category_type": "custom",
+      "object_type": "category"
+    }
+  },
+  "targets": {
+    "definition_target_02RW6OLF3ZDJD3iCK2xd3rZzz19zeoWvVMu": {
+      "unique_name": "definition_target_02RW6OLF3ZDJD3iCK2xd3rZzz19zeoWvVMu",
+      "name": "Adams-Meraki-Network",
+      "title": "Adams-Meraki-Network",
+      "type": "meraki.endpoint",
+      "base_type": "target",
+      "object_type": "definition_target",
+      "properties": {
+        "default_runtime_user_id": "definition_runtime_user_02RW6NEQIOINL6ZrvK59ym7jqvhb6gD4s15",
+        "display_name": "Adams-Meraki-Network",
+        "host": "api.meraki.com",
+        "ignore_proxy": false,
+        "is_https_proxy": false,
+        "is_integration_target": false,
+        "port": 443,
+        "protocol": "https"
+      }
+    },
+    "definition_target_02TETXRCMDOT15YYbRrY84UIhZGcoAwnNrj": {
+      "unique_name": "definition_target_02TETXRCMDOT15YYbRrY84UIhZGcoAwnNrj",
+      "name": "ISE-DEV: HTTP",
+      "title": "ISE-DEV: HTTP",
+      "type": "web-service.endpoint",
+      "base_type": "target",
+      "object_type": "definition_target",
+      "properties": {
+        "ao_remote_id": "02RXVFB710FBW7U2qN2DyUuDepqupwjLuE8",
+        "default_runtime_user_id": "definition_runtime_user_02TETXI7QYCN90ogbLbFsG2iB0IpgzXLDZD",
+        "disable_certificate_validation": true,
+        "display_name": "ISE-DEV: HTTP",
+        "host": "10.0.30.242",
+        "ignore_proxy": false,
+        "is_https_proxy": false,
+        "no_runtime_user": false,
+        "port": 443,
+        "protocol": "https"
+      }
+    }
+  },
+  "runtime_users": {
+    "definition_runtime_user_02RW6NEQIOINL6ZrvK59ym7jqvhb6gD4s15": {
+      "unique_name": "definition_runtime_user_02RW6NEQIOINL6ZrvK59ym7jqvhb6gD4s15",
+      "name": "Adam's Meraki Network API Creds",
+      "title": "Adam's Meraki Network API Creds",
+      "type": "runtime_user.meraki_credentials",
+      "base_type": "runtime_user",
+      "object_type": "definition_runtime_user",
+      "properties": {
+        "api_key": "*****",
+        "display_name": "Adam's Meraki Network API Creds"
+      }
+    },
+    "definition_runtime_user_02TETXI7QYCN90ogbLbFsG2iB0IpgzXLDZD": {
+      "unique_name": "definition_runtime_user_02TETXI7QYCN90ogbLbFsG2iB0IpgzXLDZD",
+      "name": "ISE-DEV HTTP Keys - ERS",
+      "title": "ISE-DEV HTTP Keys - ERS",
+      "type": "runtime_user.web-service_basic_credentials",
+      "base_type": "runtime_user",
+      "object_type": "definition_runtime_user",
+      "properties": {
+        "auth_option": "Basic",
+        "basic_password": "*****",
+        "basic_username": "ers_admin",
+        "display_name": "ISE-DEV HTTP Keys - ERS"
+      }
+    }
+  },
+  "variables": {
+    "variable_02RW6SNY615UZ0h58ojWOs6ejLpCh3V902b": {
+      "unique_name": "variable_02RW6SNY615UZ0h58ojWOs6ejLpCh3V902b",
+      "properties": {
+        "value": "972151",
+        "scope": "global",
+        "name": "Adams-Meraki-Organization-ID",
+        "type": "datatype.string",
+        "is_required": false,
+        "display_on_wizard": false,
+        "is_invisible": false,
+        "variable_string_format": "text"
+      },
+      "object_type": "variable"
+    }
+  },
+  "atomic_workflows": [
+    "definition_workflow_02OARCCWN2FUG7Ae7KK8k16I7KM2hFRM6QM"
+  ],
+  "remotemetas": {
+    "remote_meta_02RXVFB7AP9G04ZvcHpzL2okitJNk4G3Cuf": {
+      "base_type": "remote_meta",
+      "type": "generic.remote_meta",
+      "name": "Workflows-Remote-Target-Beta",
+      "title": "Workflows-Remote-Target-Beta",
+      "version": "1.0.0",
+      "properties": {
+        "advanced": {
+          "require_advanced": false
+        },
+        "cloud_type": "vmware",
+        "display_name": "Workflows-Remote-Target-Beta",
+        "network": {
+          "is_dhcp": true
+        },
+        "proxy": {
+          "require_proxy": false
+        }
+      },
+      "unique_name": "remote_meta_02RXVFB7AP9G04ZvcHpzL2okitJNk4G3Cuf",
+      "object_type": "remote_meta"
+    }
+  },
+  "dependent_workflows": [
+    "definition_workflow_02LCR4UKH38PM6zDR4Bx2b2J165gCF1mhvh",
+    "definition_workflow_02OARCCWN2FUG7Ae7KK8k16I7KM2hFRM6QM"
+  ]
+}
